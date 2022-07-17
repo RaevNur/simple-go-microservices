@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:14.4
+    restart: always
+    environment:
+      POSTGRES_DB: "sgm"
+      POSTGRES_USER: "sgmuser"
+      POSTGRES_PASSWORD: "pgpwd4sgm"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - .:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  
+  parser:
+    build: ./1-parser
+    ports:
+      - "50051:50051"
+    links:
+      - postgres
+
+  crud:
+    build: ./2-simple-crud
+    ports:
+      - "50052:50052"
+    links:
+      - postgres
+      - parser
+
+  apigateway:
+    build: ./3-api-gateway
+    ports:
+      - "3000:3000"
+    links:
+      - parser
+      - crud

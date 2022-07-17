@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package parser;
+
+option go_package = "./api/parser/pb";
+
+service ParserService {
+    rpc ParseStatus(google.protobuf.Empty) returns (ParseStatusResponce) {}
+}
+
+// ParseStatus
+message ParseStatusResponce {
+    int64 status = 1;
+    string message = 2;
+}

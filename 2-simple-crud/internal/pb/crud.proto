@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package crud;
+
+option go_package = "./internal/pb";
+
+service CrudService {
+    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc GetPosts(GetPostsRequest) returns (GetPostsResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+}
+
+message Post {
+    int64 id = 1;
+    int64 user_id = 2;
+    string title = 3;
+    string body = 4;
+}
+
+// Get
+message GetRequest {
+    int64 id = 1;
+}
+
+message GetResponse {
+    int64 status = 1;
+    string error = 2;
+    Post post = 3;
+}
+
+// GetPosts
+message GetPostsRequest {
+    repeated int64 id = 1;
+}
+
+message GetPostsResponse {
+    int64 status = 1;
+    string message = 2;
+    repeated Post post = 3;
+}
+
+// Delete
+message DeleteRequest {
+    int64 id = 1;
+}
+
+message DeleteResponse {
+    int64 status = 1;
+    string message = 2;
+}
+
+// Update
+message UpdateRequest {
+    int64 id = 1;
+    int64 user_id = 2;
+    string title = 3;
+    string body = 4;
+}
+
+message UpdateResponse {
+    int64 status = 1;
+    string message = 2;
+}
